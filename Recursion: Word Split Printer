@@ -1,0 +1,74 @@
+package edu.csc220.recursion;
+
+import java.io.*;
+import java.util.*;
+
+public class WordSplitPrinter {
+    /**
+     * Finds and prints out every possible way to split the input String into individual, valid English words (including
+     * if input is itself a single valid word). You must call printWordSplit below to actually print out the results.
+     */
+    public void findWordSplits(String input, TreeSet<String> allWords) {
+        // TODO: Implement this.
+        ArrayList<String> words = new ArrayList<>();
+        findWordSplitsHelper(input, allWords, words);
+    }
+
+    public void findWordSplitsHelper(String input, TreeSet<String> allWords, ArrayList<String> words) { //input = remaning letters
+        // TODO: Implement this.
+        if (input.isEmpty())
+            printWordSplit(words);
+        for (int i = 1; i < input.length() + 1; i++) { //because gets cut short by one
+            String word = input.substring(0, i);
+            if (allWords.contains(word)) {
+                words.add(word);
+                findWordSplitsHelper(input.substring(i), allWords, words);
+                words.remove(words.size() - 1);
+            }
+        }
+    }
+
+    /** Prints out a word split, i.e. one particular arrangement of words. This is implemented for you! */
+    private void printWordSplit(ArrayList<String> words) {
+        if (words.isEmpty()) {
+            System.out.println("(empty word list)");
+        } else {
+            System.out.print(words.get(0));
+            for (int i = 1; i < words.size(); i++) {
+                System.out.print(" " + words.get(i));
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        TreeSet<String> dictionary = readWords();
+        WordSplitPrinter wordSplitPrinter = new WordSplitPrinter();
+
+        // Expected to print out:
+        // i saw a bus
+        // i saw ab us
+        // is aw a bus
+        // is aw ab us
+        wordSplitPrinter.findWordSplits("isawabus", dictionary);
+    }
+
+    // Reads the "words.txt" file and returns the words in a TreeSet<String>. This is completely implemented for you!
+    private static TreeSet<String> readWords() {
+        TreeSet<String> allWords = new TreeSet<>();
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("words.txt"));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+                allWords.add(line.toLowerCase());
+            }
+            bufferedReader.close();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+        return allWords;
+    }
+}
