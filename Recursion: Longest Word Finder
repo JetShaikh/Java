@@ -1,0 +1,46 @@
+package edu.csc220.recursion;
+
+import java.util.ArrayList;
+
+public class LongestWordFinder {
+    /** Returns the longest String in the list words. If there is a tie, any of the Strings can be returned. */
+    public String findLongestWord(ArrayList<String> words) {
+        // TODO: Implement this.
+        int index = words.size();
+        if (words.size() == 1)
+            return words.get(0);
+        else
+            index--;
+
+        return findLongestWordHelper(words, index);
+
+    }
+
+    private String findLongestWordHelper(ArrayList<String> words, int index) {
+        // TODO: Implement this.
+//        ArrayList<String> words1 = words;
+        String currWord = words.get(index);
+        words.remove(index);
+
+        String longest = findLongestWord(words);
+        if (currWord.length() >= longest.length())
+            return currWord;
+        else
+            return longest;
+    }
+
+    public static void main(String[] args) {
+        LongestWordFinder longestWordFinder = new LongestWordFinder();
+        ArrayList<String> words = new ArrayList<>();
+        words.add("apple");
+        words.add("banana");
+        words.add("cat");
+        words.add("dog");
+        words.add("elephant");
+        words.add("fish");
+        words.add("gin");
+
+        // Expected to print out "Longest: elephant".
+        System.out.println("Longest: " + longestWordFinder.findLongestWord(words));
+    }
+}
