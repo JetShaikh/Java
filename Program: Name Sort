@@ -1,0 +1,153 @@
+//Author: Nuzhat M. Shaikh
+//File Name: Program.java
+
+package edu.csc220.collections;
+
+import java.util.*;
+import java.util.ArrayList;
+
+public class Program {
+    private void printWordRun(ArrayList<String> words) {
+        // TODO: Implement.
+
+        for (int i = 0; i < words.size() - 1; i++) {
+            String firstStr = words.get(i), secondStr = words.get(i + 1);
+            if (firstStr.length() > secondStr.length()) {
+                for (int j = i; j >= 0; j--)
+                    System.out.println(words.get(j));
+            }
+        }
+
+    }
+
+    private void shuffleLine(Queue<String> line, String newPersonInFront) {
+        // TODO: Implement. Modify the line Queue directly.
+
+        String firstEle;
+        while (newPersonInFront != line.peek()) {
+            firstEle = line.peek();
+            line.remove(firstEle);
+            line.add(firstEle);
+        }
+
+    }
+
+    private void printExtraNames(ArrayList<String> names) {
+        Set<String> set = new HashSet<>();
+
+        for (String name: names) {
+            if (set.add(name) == false)
+            System.out.println(name);
+        }
+
+    }
+
+    private void populateNameMap(ArrayList<String> names, Map<String, String> nameMap) {
+        // TODO: Implement. Add any new entries to the nameMap parameter directly.
+        ArrayList<String> newNames = new ArrayList();
+        TreeMap<Character, ArrayList<String>> info = new TreeMap<>();
+
+        for (int i = 0; i < names.size(); i++) {
+            char firstLetters = names.get(i).charAt(0);
+            for (int j = 0; j < names.size(); j++) {
+                if (firstLetters == (names.get(j).charAt(0)))
+                    newNames.add(names.get(j));
+                else
+                    newNames.remove(names.get(j));
+            }
+//            System.out.println(firstLetters + ": " + newNames);
+
+            info.put(firstLetters, new ArrayList<>(newNames));
+        }
+
+        info.keySet().forEach(key -> {
+            System.out.print("\n" + key + ": ");
+            for (int i = 0; i < info.get(key).size(); i++) {
+                if (i + 1 == info.get(key).size())
+                    System.out.print(info.get(key).get(i));
+                else
+                    System.out.print(info.get(key).get(i) + ",");
+            }
+        });
+
+    }
+
+    public static void main(String[] args) {
+        Program program = new Program();
+        program.testPrintWordRun();
+        program.testShuffleLine();
+        program.testPrintExtras();
+        program.testPopulateNameMap();
+    }
+
+    private void testPrintWordRun() {
+        ArrayList<String> words = new ArrayList<>();
+        words.add("I");
+        words.add("am");
+        words.add("cat");
+        words.add("with");
+        words.add("happy");
+        words.add("dog");
+        words.add("sitting");
+
+        System.out.println("Testing printWordRun...");
+        printWordRun(words);
+        System.out.println();
+    }
+
+    private void testShuffleLine() {
+        Queue<String> line = new LinkedList<>();
+        line.add("Troy");
+        line.add("Annie");
+        line.add("Britta");
+        line.add("Abed");
+        line.add("Shirley");
+        line.add("Jeff");
+        line.add("Pierce");
+
+        System.out.println("Testing shuffleLine...");
+        shuffleLine(line, "Abed");
+        System.out.println("Queue is now: " + line);
+        System.out.println();
+    }
+
+    private void testPrintExtras() {
+        ArrayList<String> names = new ArrayList<>();
+        names.add("Troy");
+        names.add("Annie");
+        names.add("Britta");
+        names.add("Jeff");
+        names.add("Abed");
+        names.add("Shirley");
+        names.add("Abed");
+        names.add("Jeff");
+        names.add("Pierce");
+        names.add("Abed");
+        names.add("Troy");
+
+        System.out.println("Testing printExtraNames...");
+        printExtraNames(names);
+        System.out.println();
+    }
+
+    private void testPopulateNameMap() {
+        ArrayList<String> names = new ArrayList<>();
+        names.add("Troy");
+        names.add("Annie");
+        names.add("Britta");
+        names.add("Abed");
+        names.add("Shirley");
+        names.add("Jeff");
+        names.add("Pierce");
+        names.add("Ben");
+        names.add("Alf");
+        TreeMap<String, String> nameMap = new TreeMap<>();
+
+        System.out.println("Testing populateNameMap...");
+        populateNameMap(names, nameMap);
+        for (Map.Entry<String, String> entry: nameMap.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+}
+
